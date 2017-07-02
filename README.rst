@@ -63,7 +63,7 @@ An example is given below which demonstrates the output of ``FrogChunker``. The 
     phrase = 'Volkswagen Polo 40-PXH-7 (4NG)'
     tagger = FrogTagger()
     tagged = tagger.tag(phrase)
-    chunker = FrogDefaultChunker()
+    chunker = FrogChunker()
     chunker.parse(tagged)
 
 The output is a chunk parse tree with particular types of entities:
