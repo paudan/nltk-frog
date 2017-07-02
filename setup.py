@@ -7,7 +7,7 @@ except ImportError:
 here = os.path.abspath(os.path.dirname(__file__))
 README = open(os.path.join(here, 'README.rst')).read()
 
-setup(name='nltk-opennlp',
+setup(name='nltk-frog',
       version='1.0.0',
       description='NLTK interface with Frog NLP package',
       long_description=README,
