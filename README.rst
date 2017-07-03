@@ -32,8 +32,8 @@ Tagging a sentence from Python:
     phrase = 'Volkswagen Polo 00-PXX-5 (4NG)'
     tagger.tag(phrase)
 
-
-The output is a list of (token, tag):
+Note that, besides passing lists of tokens as defined by NLTK interface class, one can also pass full text strings, without any tokenization performed
+previously (as shown in the example above). The output is a list of (token, tag), which is more similar to NLTK contract:
 
 ::
 
