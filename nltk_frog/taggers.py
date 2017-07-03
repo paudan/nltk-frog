@@ -23,7 +23,6 @@ class FrogTagger(TaggerI):
         else:
             _input = sentences
         self.__output = self.__frog.process(_input)
-        print(self.__output)
         return [(token['text'], token['pos'].split('(')[0]) for token in self.__output]
 
     def get_tag_probabilities(self):
