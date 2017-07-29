@@ -1,17 +1,26 @@
 from nltk.chunk import conlltags2tree
 from nltk.chunk.api import ChunkParserI
 from frog import Frog, FrogOptions
+from pynlpl.formats import folia
 
 
 class AbstractFrogChunker(ChunkParserI):
 
     _frog = None
 
-    def __init__(self):
-        self._frog = Frog(FrogOptions(parser=False, mwu=False))
+    def __init__(self, **kwargs):
+        self._frog = Frog(FrogOptions(parser=False, mwu=False, tok=False, xmlIn=True, **kwargs))
+
+    def __get_folia_doc__(self, tokens):
+        doc = folia.Document(id='nltk-sentence')
+        folia_sent = doc.add(folia.Text)
+        for tok, pos in tokens:
+            word = folia_sent.add(folia.Word, tok)
+            word.add(folia.PosAnnotation(None, set='custom', cls=pos))
+        return doc
 
     def __create_tree__(self, tokens, key):
-        _input = ' '.join([token[0] for token in tokens])
+        _input = self.__get_folia_doc__(tokens)
         __output = self._frog.process(_input)
         for token in __output:
             token['pos'] = token['pos'].split('(')[0]
@@ -38,7 +47,7 @@ class FrogNERChunker(AbstractFrogChunker):
 class FrogChunker(AbstractFrogChunker):
 
     def parse(self, tokens):
-        _input = ' '.join([token[0] for token in tokens])
+        _input = self.__get_folia_doc__(tokens)
         __output = self._frog.process(_input)
         for token in __output:
             token['pos'] = token['pos'].split('(')[0]

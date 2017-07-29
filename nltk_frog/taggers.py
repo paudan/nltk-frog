@@ -1,25 +1,23 @@
 from nltk.tag.api import TaggerI
+from pynlpl.formats import folia
 from frog import Frog, FrogOptions
 
 
 class FrogTagger(TaggerI):
 
-    def __init__(self):
+    def __init__(self, **kwargs):
         # Disable multiword recognition, which is performed by the chunker
-        options = FrogOptions(parser=False, mwu=False)
+        options = FrogOptions(parser=False, mwu=False, xmlIn=True, **kwargs)
         self.__frog = Frog(options)
 
     def tag(self, sentences):
 
         if isinstance(sentences, list):
-            _input = ''
+            doc = folia.Document(id='nltk-sentence')
+            folia_sent = doc.add(folia.Text)
             for sent in sentences:
-                if isinstance(sent, list):
-                    _input += ' '.join((x for x in sent))
-                else:
-                    _input += ' ' + sent
-            _input = _input.lstrip()
-            _input += '\n'
+                folia_sent.add(folia.Word, sent)
+            _input = doc
         else:
             _input = sentences
         self.__output = self.__frog.process(_input)
